@@ -1,0 +1,1 @@
+Initial mass: 400.0 kgFinal mass: 100.0 kgExhaust velocity: 200.0 m/sDelta-v = 277.26 m/s
