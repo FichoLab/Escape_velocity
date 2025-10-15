@@ -1,4 +1,4 @@
-#### Velocity calculator ####
+## Velocity calculator ##
 This project calculates does your rocket has enough velocity to escape Earth. And it shows you how much Escape velocities is needed to escape potential human habitat worlds
 
 ## How this works? ##
