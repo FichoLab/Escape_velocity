@@ -54,11 +54,6 @@ if choice == "a":
     print(f"Delta_v = {delta_v:.2f} m/s")
     print(f"v_escape_velocity = {v_escape_velocity:.2f} m/s")
 
-    if delta_v >= v_escape_velocity:
-        print("Rocket has enough velocity to escape Earth")
-    else:
-        print("Rocket cannot escape Earth.")
-
     # Save results to file
     with open("result/Delta_v.txt", "w") as f:
         f.write(f"Initial mass: {m0} kg")
@@ -66,7 +61,35 @@ if choice == "a":
         f.write(f"Exhaust velocity: {ve} m/s")
         f.write(f"Delta-v = {delta_v:.2f} m/s")
 
-    print(f"Delta-v = {delta_v:.2f} m/s (saved to result/Delta_v.txt)")
+    # Calculating thrust
+    tb = float(input("Enter burn time (sec):"))
+    m = (m0 - mf) / tb                                     # m is the mass flow rate of propellant
+    F = m * ve                                             # F is thrust
+    with open("result/Delta_v.txt", "w") as f:
+        f.write(f"Thrust: {F:.2f} N")
+    print(f"Thrust: {F:.2f} N")                            # Thrust must exceed rocket's weight (m * g) for liftoff
+
+    # Calculating acceleration
+    m_dot = F / ve
+    t = tb / 2
+    current_mass = m0 - m_dot * t
+    a = (F - current_mass * g0) / current_mass
+    with open("result/rocket_output.txt", "w") as f:
+        f.write(f"Acceleration at t={t:.2f} s: {a:.2f} m/s^2")
+    print(f"Acceleration at t={t:.2f} s: {a:.2f} m/s^2")
+
+    # Calculating maximum altitude
+    vb = delta_v - (g0 * tb) - 200     # Approximate drag loss
+    h = (vb ** 2) / (2 * g0) / 1000    # Converts to km
+    with open("result/rocket_output.txt", "w") as f:
+        f.write(f"Maximum Altitude: {h:.2f} km")
+    print(f"Maximum Altitude: {h:.2f} km")
+    
+    if delta_v >= v_escape_velocity:
+        print("Rocket has enough velocity to escape Earth")
+    else:
+        print("Rocket cannot escape Earth.")
+
 
 elif choice == "b":
     def escape_velocity(mass, radius):
