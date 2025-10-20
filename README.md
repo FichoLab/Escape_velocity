@@ -10,9 +10,16 @@ User types a or b and presses Enter, than if "a" is selected user types:
 m0 = initial mass (kg),
 mf = final mass (kg),
 ve = exhaust velocity(m/s)
+tb = burn time (s)
 
 Program uses The Tsiolkovsky Rocket Equation, also known as the ideal rocket equation:
 ***Δv = ve × ln(m0 / mf)***
+
+Thrust formula:
+***F = m * ve***
+
+Acceleration formula:
+***a = (F - m * g) / m***
 
 ## Constants
 G = 6.67430e-11  # gravitational constant, m³/kg/s²
