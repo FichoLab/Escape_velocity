@@ -3,7 +3,9 @@ This project calculates does your rocket has enough velocity to escape Earth. An
 
 ## How this works? ##
 At the start user has two options:
+
 a) Type data and see if your rocket can escape Earth and go to Moon
+
 b) See Escape Velocities of planets and moons
 
 User types a or b and presses Enter, than if "a" is selected user types:
