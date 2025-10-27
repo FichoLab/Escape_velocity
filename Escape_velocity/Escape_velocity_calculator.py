@@ -62,18 +62,16 @@ if choice == "a":
         f.write(f"Delta-v = {delta_v:.2f} m/s")
 
     # Calculating thrust
-    tb = float(input("Enter burn time (sec):"))
+    tb = float(input("Enter burn time (sec):"))            # tb is burn time
     m = (m0 - mf) / tb                                     # m is the mass flow rate of propellant
     F = m * ve                                             # F is thrust
-    with open("result/Delta_v.txt", "w") as f:
-        f.write(f"Thrust: {F:.2f} N")
-    print(f"Thrust: {F:.2f} N")                            # Thrust must exceed rocket's weight (m * g) for liftoff
 
     # Calculating acceleration
     m_dot = F / ve
     t = tb / 2
     current_mass = m0 - m_dot * t
     a = (F - current_mass * g0) / current_mass
+    # a = (F - m * g) / m
     with open("result/rocket_output.txt", "w") as f:
         f.write(f"Acceleration at t={t:.2f} s: {a:.2f} m/s^2")
     print(f"Acceleration at t={t:.2f} s: {a:.2f} m/s^2")
@@ -81,15 +79,44 @@ if choice == "a":
     # Calculating maximum altitude
     vb = delta_v - (g0 * tb) - 200     # Approximate drag loss
     h = (vb ** 2) / (2 * g0) / 1000    # Converts to km
-    with open("result/rocket_output.txt", "w") as f:
-        f.write(f"Maximum Altitude: {h:.2f} km")
-    print(f"Maximum Altitude: {h:.2f} km")
-    
-    if delta_v >= v_escape_velocity:
-        print("Rocket has enough velocity to escape Earth")
-    else:
-        print("Rocket cannot escape Earth.")
 
+    # Translunar Injection Calculation (vis-viva Equation)
+    mu_earth = G * planets["Earth"]["mass"]
+    r_earth = planets["Earth"]["radius"]
+    r_moon = 384400e3 # distance from Earth to Moon center (m)
+
+    # Semi-major axis of transfer orbit
+    a_transfer = (r_earth + r_moon) / 2
+
+    # Velocity in circular orbit near Earth (LEO)
+    v_leo = math.sqrt(mu_earth / r_earth)
+
+    v_to = math.sqrt(mu_earth * (2 / r_earth - 1 / a_transfer))
+
+    delta_v_transfer_orbit = v_to - v_leo
+    print(f"Delta-v needed for translunar injection: {delta_v_transfer_orbit:.2f} m/s")
+
+    # Time to reach Moon (half on orbit)
+    t_transfer = math.pi * math.sqrt(a_transfer**3 / mu_earth)
+    print(f"Estimated travel time to Moon: {t_transfer / 3600 / 24:.2f} days")
+
+    if delta_v >= 11200:
+        print("===Rocket can escape Earth's gravity completely.===")
+    elif delta_v >= 10800:
+        print("===Rocket can perform translunar injection and reach the Moon.===")
+    elif delta_v >= 9400:
+        print("===Rocket can reach low Earth orbit (LEO), but not the Moon.===")
+    else:
+        print("===Suborbital flight only.===")
+
+    with open("result/rocket_output.txt", "a") as f:
+        f.write(f"Thrust: {F:.2f} N")
+        f.write(f"Maximum Altitude: {h:.2f} km")
+        f.write(f"Delta-v needed for translunar injection: {delta_v_transfer_orbit:.2f} m/s")
+        f.write(f"Rocket delta_v: {delta_v:.2f} m/s")
+        f.write(f"Estimated travel time to Moon: {t_transfer / 3600 / 24:.2f} days")
+    print(f"Thrust: {F:.2f} N")
+    print(f"Maximum Altitude: {h:.2f} km")
 
 elif choice == "b":
     def escape_velocity(mass, radius):
