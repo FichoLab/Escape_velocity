@@ -12,6 +12,11 @@ mf = final mass (kg),
 ve = exhaust velocity(m/s)
 tb = burn time (s)
 
+The program then calculates:
+- Whether the rocket can reach **Low Earth Orbit**, **the Moon**, or **escape Earth entirely**
+- Estimated **travel time** to the Moon  
+- **Thrust**, **acceleration**, and **maximum altitude**
+
 Program uses The Tsiolkovsky Rocket Equation, also known as the ideal rocket equation:
 ***Δv = ve × ln(m0 / mf)***
 
@@ -20,6 +25,9 @@ Thrust formula:
 
 Acceleration formula:
 ***a = (F - m * g) / m***
+
+Vis-Viva Equation:
+***v^2 = GM (2/r - 1/a)***
 
 ## Constants
 G = 6.67430e-11  # gravitational constant, m³/kg/s²
