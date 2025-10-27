@@ -32,8 +32,10 @@ Vis-Viva Equation:
 ***v^2 = GM (2/r - 1/a)***
 
 ## Constants
-G = 6.67430e-11  # gravitational constant, m³/kg/s²
-g0 = 9.81        # standard gravity, m/s²
+
+G = 6.67430e-11  = gravitational constant, m³/kg/s²
+
+g0 = 9.81        = standard gravity, m/s²
 
 ## Planets considered for habitation and Earth
 planets:
