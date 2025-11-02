@@ -1,9 +1,13 @@
 import math
 import os
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import numpy as np
 
 # Constants
 G = 6.67430e-11  # gravitational constant, m³/kg/s²
 g0 = 9.81        # standard gravity, m/s²
+r_moon_orbit = 384400e3 # distance between Earth and Moon
 
 # Planets considered for habitation and Earth
 planets = {
@@ -90,7 +94,6 @@ if choice == "a":
 
     # Velocity in circular orbit near Earth (LEO)
     v_leo = math.sqrt(mu_earth / r_earth)
-
     v_to = math.sqrt(mu_earth * (2 / r_earth - 1 / a_transfer))
 
     delta_v_transfer_orbit = v_to - v_leo
@@ -117,6 +120,36 @@ if choice == "a":
         f.write(f"Estimated travel time to Moon: {t_transfer / 3600 / 24:.2f} days")
     print(f"Thrust: {F:.2f} N")
     print(f"Maximum Altitude: {h:.2f} km")
+
+    # Animation
+    earth_img = mpimg.imread("earth.png")
+    moon_img = mpimg.imread("moon.png")
+    fig, ax = plt.subplots(figsize=(10, 4))
+    scale = 15  # makes Earth and Moon visible (not physically accurate)
+
+    # Distances in 10^6 m
+    r_earth = planets["Earth"]["radius"]
+    r_moon = moons["Moon (Earth)"]["radius"]
+    earth_size = (r_earth / 1e6) * scale
+    moon_center = r_moon_orbit / 1e6
+    moon_size = (r_moon / 1e6) * scale
+
+    # Plot Earth and Moon
+    ax.imshow(earth_img, extent=[-earth_size, earth_size, -earth_size, earth_size], zorder=1)
+    ax.imshow(moon_img, extent=[moon_center - moon_size, moon_center + moon_size, -moon_size, moon_size], zorder=1)
+
+    fraction = min(delta_v / delta_v_transfer_orbit, 1.0)
+    x_end = moon_center * fraction
+    x = np.linspace(0, x_end, 300)
+    y = 0.2 * moon_size * np.sin(np.pi * x / moon_center)  # visible arc
+    ax.plot(x, y, color="red", lw=2, label=f"Rocket path ({fraction * 100:.1f}% of trip)", zorder=2)
+
+    ax.set_aspect("equal")
+    ax.set_xlabel("Distance (10^6 m)")
+    ax.set_ylabel("Distance (10^6 m)")
+    ax.legend()
+    ax.set_title("Earth–Moon Visualisation with Rocket Path")
+    plt.show()
 
 elif choice == "b":
     def escape_velocity(mass, radius):
