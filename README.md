@@ -18,6 +18,7 @@ The program then calculates:
 - Whether the rocket can reach **Low Earth Orbit**, **the Moon**, or **escape Earth entirely**
 - Estimated **travel time** to the Moon  
 - **Thrust**, **acceleration**, and **maximum altitude**
+-After the calculations, the program displays the path from the Earth to the Moon. The red line shows the trajectory the rocket followed.
 
 Program uses The Tsiolkovsky Rocket Equation, also known as the ideal rocket equation:
 ***Δv = ve × ln(m0 / mf)***
